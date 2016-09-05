@@ -1,0 +1,96 @@
+create database testPHP;
+CREATE USER 'userTest'@'localhost' IDENTIFIED BY 'torbe';
+GRANT ALL PRIVILEGIES ON * . * TO 'userTest'@'localhost';
+GRANT ALL ON testPHP.* TO 'userTest'@'localhost' WITH GRANT OPTION;
+
+show grants for CURRENT_USER;
+
+USE testPHP;
+
+CREATE TABLE IF NOT EXISTS tblacciones (
+	cveAccion INT(2) NOT NULL AUTO_INCREMENT,
+	desAccion varchar(45) DEFAULT NULL,
+	activo CHAR(1),
+	PRIMARY KEY (cveAccion));
+	
+CREATE TABLE IF NOT EXISTS tblusuarios (
+	idUsuario INT(11) NOT NULL AUTO_INCREMENT,
+	nombre varchar(45) DEFAULT NULL,
+	paterno varchar(45) DEFAULT NULL,
+	materno varchar(45) DEFAULT NULL,
+	login varchar(100),
+	password varchar(100),
+	activo CHAR(1),
+	PRIMARY KEY (idUsuario));
+	
+CREATE TABLE IF NOT EXISTS  tblbitacoras (
+	idBitacora INT(11) NOT NULL AUTO_INCREMENT,
+	idUsuario INT(11),
+	cveAccion INT(2),
+	fechaMovimiento DATE,
+	fechaActualizacion DATE,
+	observaciones MEDIUMTEXT,
+	PRIMARY KEY (idBitacora),
+	CONSTRAINT relBitacoraUsuario FOREIGN KEY(idUsuario) REFERENCES tblusuarios(idUsuario),
+	CONSTRAINT relBitacoraAccion FOREIGN KEY(cveAccion) REFERENCES tblacciones(cveAccion)
+);
+
+CREATE TABLE IF NOT EXISTS tblexamenes (
+	idExamen INT(11) NOT NULL AUTO_INCREMENT,
+	idUsuario INT(11),
+	numPreguntas INT(3),
+	fechaRegistro DATE,	
+	fechaActualizacion DATE,
+	PRIMARY KEY(idExamen),
+	CONSTRAINT relexamnUsuario FOREIGN KEY(idUsuario) REFERENCES tblusuarios(idUsuario)
+	);
+
+CREATE TABLE IF NOT EXISTS tblpreguntas (
+	cvePreguntas INT(11) NOT NULL AUTO_INCREMENT,
+	desPregunta varchar(500),
+	activo char(1),
+	fechaRegistro DATETIME,
+	fechaACtualizacion DATETIME,
+	PRIMARY KEY(cvePreguntas)
+	);
+
+CREATE TABLE IF NOT EXISTS tblexamenespreguntas (
+	idExamenPregunta INT(1) NOT NULL AUTO_INCREMENT,
+	idExamen INT(11), 
+	cvePreguntas INT(11), 
+	activo char(1),
+	fechaRegistro DATETIME,
+	fechaActualizacion DATETIME,
+	PRIMARY KEY (idExamenPregunta),
+	CONSTRAINT relexamen FOREIGN KEY(idExamen) REFERENCES tblexamenes(idExamen),
+	CONSTRAINT relpregunta FOREIGN KEY(cvePreguntas) REFERENCES tblpreguntas(cvePreguntas)
+	);
+	CONSTRAINT relexamen FOREIGN KEY(idExamen) REFERENCES tblusuarios(idUsuario),
+	CONSTRAINT relBitacoraAccion FOREIGN KEY(cveAccion) REFERENCES tblacciones(cveAccion)
+	);
+
+CREATE TABLE IF NOT EXISTS tblrespuestas (
+	cveRespuesta INT(11) NOT NULL AUTO_INCREMENT,
+	cvePreguntas INT(11),
+	desRespuesta varchar(500),
+	correcta char(1),
+	activo char(1),
+	fechaRegistro DATETIME,
+	fechaActualizacion DATETIME,
+	PRIMARY KEY(cveRespuesta),
+	CONSTRAINT relRespuestaPregunta FOREIGN KEY(cvePreguntas) REFERENCES tblpreguntas(cvePreguntas)
+	);
+	
+
+
+
+
+
+
+
+
+
+
+
+
+

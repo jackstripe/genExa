@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tblusuarios")
+ * @ORM\Table(name="usuarios2")
  */
 class User extends BaseUser
 {
@@ -17,14 +17,10 @@ class User extends BaseUser
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $idUsuario;
-    $nombre
-    $paterno
-    $materno
-    $login
-    $password
-    $activo
-
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     */
     public function __construct()
     {
         parent::__construct();
